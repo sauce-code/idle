@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pfand</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3schools32.css">
+</head>
+
+<body>
+    <script>
+
+        const data = {
+            things: 0,
+            buildings: [0, 0, 0, 0, 0],
+            upgrades: [0, 0, 0, 0, 0],
+        }
+
+        const buffer = {
+            tpsTotal: 0,
+            tps: [0, 0, 0, 0, 0],
+            prices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+        }
+
+        const rules = {
+            rate: 1,
+            buildings: {
+                count: 5,
+                bonus: [1, 10, 100, 1_000, 10_000],
+                cost: [10, 100, 1_000, 10_000, 100_000],
+                names: ["Obdachloser", "Festivalgänger", "Supermarkt", "Mülldeponie", "Ozean"],
+                costIncrement: .1,
+                steps: [1, 10, 50]
+            },
+            upgrades: {
+                step: 20,
+                cost: [1_000, 10_000, 100_000, 1_000_000, 10_000_000],
+                multiplier: 2,
+            }
+        }
+
+        let loopId;
+
+        function loop() {
+            data.things += buffer.tpsTotal * rules.rate;
+            document.getElementById("cookieCount").innerHTML = data.things;
+            updateButtons();
+        }
+
+        function startLoop() {
+            loopId = setInterval(loop, 1_000); //run this once every 1000ms
+            document.getElementById("buttonStartStop").value = "stop";
+            document.getElementById("buttonStartStop").onclick = stopLoop;
+        }
+
+        function stopLoop() {
+            clearInterval(loopId);
+            document.getElementById("buttonStartStop").value = "start";
+            document.getElementById("buttonStartStop").onclick = startLoop;
+        }
+
+        function clickThing() {
+            data.things += rules.rate;
+            document.getElementById("cookieCount").innerHTML = data.things;
+            updateButtons();
+        }
+
+        function updateButtons() {
+            for (let i = 0; i < rules.buildings.count; i++) {
+                for (let j = 0; j < rules.buildings.steps.length; j++) {
+                    document.getElementById("buy-" + i + "-" + j).disabled = (buffer.prices[i][j] > data.things);
+                }
+            }
+        }
+
+        function buy(building, step) {
+            data.things -= buffer.prices[building][step];
+            buffer.tpsTotal += rules.buildings.bonus[building] * rules.buildings.steps[step];
+            data.buildings[building] += rules.buildings.steps[step];
+            document.getElementById("cookieCount").innerHTML = data.things;
+            document.getElementById("buildingCount" + building).innerHTML = data.buildings[building];
+            updatePrices(building);
+            updateTps();
+            updateButtons();
+        }
+
+        function updatePrices(num) {
+            if (num === undefined) {
+                for (let i = 0; i < rules.buildings.count; i++) {
+                    updatePrices(i);
+                }
+            } else {
+                for (let i = 0; i < rules.buildings.steps.length; i++) {
+                    let sum = 0;
+                    for (let j = 0; j < rules.buildings.steps[i]; j++) {
+                        sum += Math.floor(rules.buildings.cost[num] * ((1 + rules.buildings.costIncrement) ** (data.buildings[num] + j)));
+                    }
+                    buffer.prices[num][i] = sum;
+                }
+                document.getElementById("buildingCost" + num).innerHTML = buffer.prices[num][0];
+            }
+        }
+
+        function updateUpgrades(num) {
+            return
+        }
+
+        function updateTps(num) {
+            if (num === undefined) {
+                let sum = 0;
+                for (let i = 0; i < rules.buildings.count; i++) {
+                    updateTps(i);
+                    sum += buffer.tps[i];
+                }
+                buffer.tpsTotal = sum;
+                document.getElementById("tpsTotal").innerHTML = buffer.tpsTotal;
+            } else {
+                buffer.tps[num] = data.buildings[num] * rules.buildings.bonus[num] * rules.upgrades.multiplier ** data.upgrades[num];
+                document.getElementById("tps" + num).innerHTML = buffer.tps[num];
+            }
+        }
+
+    </script>
+
+    <input type="image" src="https://www.verbraucherzentrale.de/sites/default/files/inline-images/Einwegflaschen-Logo.jpg" width="200px" height="200px"
+        onclick="clickThing()"><br />
+    <label>Pfandflaschen:</label><br />
+    <label id="cookieCount">0</label><br />
+    <label>Pfandflaschen pro Sekunde:</label><br />
+    <label id="tpsTotal">0</label><br />
+    <table id="buildings">
+        <th>Art</th>
+        <th>Anzahl</th>
+        <th>Flaschen / s</th>
+        <th>Kosten</th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </table>
+    <script>
+        for (let i = 0; i < rules.buildings.count; i++) {
+
+            const tr = document.createElement("tr");
+            {
+                const td = document.createElement("td");
+                td.innerHTML = rules.buildings.names[i];
+                tr.appendChild(td);
+            }
+            {
+                const td = document.createElement("td");
+                td.id = "buildingCount" + i;
+                td.setAttribute("style", "text-align:right;");
+                td.innerHTML = data.buildings[i];
+                tr.appendChild(td);
+            }
+            {
+                const td = document.createElement("td");
+                td.id = "tps" + i;
+                td.setAttribute("style", "text-align:right;");
+                td.innerHTML = buffer.tps[i];
+                tr.appendChild(td);
+            }
+            {
+                const td = document.createElement("td");
+                td.id = "buildingCost" + i;
+                td.setAttribute("style", "text-align:right;");
+                td.innerHTML = Math.floor(rules.buildings.cost[i] * ((1 + rules.buildings.costIncrement) ** data.buildings[i]));
+                tr.appendChild(td);
+            }
+
+            for (let j = 0; j < rules.buildings.steps.length; j++) {
+                const td = document.createElement("td");
+                {
+                    const input = document.createElement("input");
+                    input.id = "buy-" + i + "-" + j;
+                    input.type = "button";
+                    input.value = "buy " + rules.buildings.steps[j];
+                    input.disabled = true;
+                    input.onclick = function () { buy(i, j) }
+                    td.appendChild(input);
+                }
+                tr.appendChild(td);
+            }
+            document.getElementById("buildings").appendChild(tr);
+        }
+        updatePrices();
+        startLoop();
+    </script>
+</body>
+
+</html>
