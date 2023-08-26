@@ -49,7 +49,7 @@ function stopLoop() {
     clearInterval(loopId);
 }
 
-export function autosave(enabled) {
+function autosave(enabled) {
     if (enabled) {
         autosaveLoopId = setInterval(loop, rules.saveInterval);
     } else {
@@ -57,13 +57,13 @@ export function autosave(enabled) {
     }
 }
 
-export function clickThing() {
+function clickThing() {
     data.things += rules.speed;
     updateThingCount();
     updateButtons();
 }
 
-export function reset() {
+function reset() {
     data = {
         things: 0,
         buildings: [0, 0, 0, 0, 0],
@@ -86,7 +86,7 @@ function updateButtons() {
     }
 }
 
-export function buy(building, step) {
+function buy(building, step) {
     data.things -= buffer.prices[building][step];
     buffer.tpsTotal += rules.buildings.bonus[building] * rules.buildings.steps[step];
     data.buildings[building] += rules.buildings.steps[step];
@@ -152,12 +152,12 @@ function setDate() {
     data.expires.setDate(Date.now() + 365);
 }
 
-export function writeCookie() {
+function writeCookie() {
     data.date = Date.now();
     document.cookie = 'data=' + JSON.stringify(data) + '; SameSite=Strict; expires=Sun, Mo Jan 2024 12:00:00 UTC; path=/';
 }
 
-export function readCookie() {
+function readCookie() {
     if (document.cookie === "") {
         console.log("was empty");
     } else {
@@ -191,11 +191,11 @@ function fillBuffer() {
     buffer.prices = 0;
 }
 
-export function deleteCookie() {
+function deleteCookie() {
     document.cookie = 'data=; SameSite=Strict; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
 
-export function initTableBuildings() {
+function initTableBuildings() {
     for (let i = 0; i < rules.buildings.count; i++) {
 
         const tr = document.createElement("tr");
@@ -242,7 +242,7 @@ export function initTableBuildings() {
         document.getElementById("buildings").appendChild(tr);
     }
 
-    export function main() {
+    function main() {
         initTableBuildings();
         updatePrices();
         startLoop();
