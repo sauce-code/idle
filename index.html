@@ -5,9 +5,18 @@
     <title>Pfand</title>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3schools32.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+    <style>
+        .github-fork-ribbon:before {
+            background-color: #333;
+        }
+    </style>
 </head>
 
 <body>
+    <a class="github-fork-ribbon" href="https://github.com/sauce-code/idle" data-ribbon="Fork me on GitHub"
+        title="Fork me on GitHub">Fork me on GitHub</a>
     <input type="button" onclick="writeCookie()" value="save" />
     <input type="button" onclick="readCookie()" value="load" />
     <input type="button" onclick="deleteCookie()" value="delete" /><br />
@@ -42,7 +51,8 @@
                 step: 20,
                 cost: [1_000, 10_000, 100_000, 1_000_000, 10_000_000],
                 multiplier: 2,
-            }
+            },
+            saveInterval: 10_000,
         }
 
         let loopId;
@@ -175,10 +185,10 @@
 
             buffer.tps[num] = data.buildings[num] * rules.buildings.bonus[num] * rules.upgrades.multiplier ** data.upgrades[num];
             let sum = 0;
-                for (let i = 0; i < rules.buildings.count; i++) {
-                    updateTps(i);
-                    sum += buffer.tps[i];
-                }
+            for (let i = 0; i < rules.buildings.count; i++) {
+                updateTps(i);
+                sum += buffer.tps[i];
+            }
             buffer.tpsTotal = sum;
 
             buffer.prices = 0;
@@ -256,6 +266,10 @@
         updatePrices();
         startLoop();
         readCookie();
+        window.addEventListener("beforeunload", function () {
+            writeCookie();
+        });
+        setInterval(writeCookie, rules.saveInterval);
     </script>
 </body>
 
