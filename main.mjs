@@ -195,7 +195,7 @@ function deleteCookie() {
     document.cookie = 'data=; SameSite=Strict; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
 
-function initTableBuildings() {
+export function initTableBuildings() {
     for (let i = 0; i < rules.buildings.count; i++) {
 
         const tr = document.createElement("tr");
