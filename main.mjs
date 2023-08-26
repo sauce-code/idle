@@ -242,12 +242,15 @@ export function initTableBuildings() {
         document.getElementById("buildings").appendChild(tr);
     }
 
-    initTableBuildings();
-    updatePrices();
-    startLoop();
-    readCookie();
-    window.addEventListener("beforeunload", function () {
-        writeCookie();
-    });
-    setInterval(writeCookie, rules.saveInterval);
+    export function main() {
+        initTableBuildings();
+        updatePrices();
+        startLoop();
+        readCookie();
+        window.addEventListener("beforeunload", function () {
+            writeCookie();
+        });
+        setInterval(writeCookie, rules.saveInterval);
+    }
+
 }
