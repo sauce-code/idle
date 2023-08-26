@@ -19,7 +19,8 @@
         title="Fork me on GitHub">Fork me on GitHub</a>
     <input type="button" onclick="writeCookie()" value="save" />
     <input type="button" onclick="readCookie()" value="load" />
-    <input type="button" onclick="deleteCookie()" value="delete" /><br />
+    <input type="button" onclick="deleteCookie()" value="delete" />
+    <input type="button" onclick="reset()" value="reset" /><br />
     <script>
 
         let data = {
@@ -78,6 +79,21 @@
         function clickThing() {
             data.things += rules.speed;
             updateThingCount();
+            updateButtons();
+        }
+
+        function reset() {
+            data = {
+                things: 0,
+                buildings: [0, 0, 0, 0, 0],
+                upgrades: [0, 0, 0, 0, 0],
+                date: null,
+            }
+            deleteCookie();
+            updateTps();
+            updatePrices();
+            updateThingCount();
+            updateBuildingCount();
             updateButtons();
         }
 
