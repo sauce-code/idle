@@ -146,7 +146,7 @@
 
         function writeCookie() {
             data.date = Date.now();
-            document.cookie = 'data=' + JSON.stringify(data) + '; SameSite=None; Secure; expires=Thu, 18 Dec 2024 12:00:00 UTC;';
+            document.cookie = 'data=' + JSON.stringify(data) + '; expires=Thu, 30 Aug 2023 12:00:00 UTC; path=/';
         }
 
         function readCookie() {
@@ -254,7 +254,6 @@
         }
         updatePrices();
         startLoop();
-        document.getElementById("a").innerHTML = JSON.stringify(data);
         readCookie();
     </script>
 </body>
