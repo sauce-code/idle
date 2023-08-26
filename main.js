@@ -242,7 +242,7 @@ function initTableBuildings() {
         document.getElementById("buildings").appendChild(tr);
     }
 
-    function main() {
+    export function main() {
         initTableBuildings();
         updatePrices();
         startLoop();
