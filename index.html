@@ -21,6 +21,7 @@
     <input type="button" onclick="readCookie()" value="load" />
     <input type="button" onclick="deleteCookie()" value="delete" />
     <input type="button" onclick="reset()" value="reset" /><br />
+    <input type="checkbox" onclick="toggleAutosave()" value="reset" /><br />
     <script>
 
         let data = {
@@ -58,6 +59,8 @@
 
         let loopId;
 
+        let autosaveLoopId;
+
         function loop() {
             data.things += buffer.tpsTotal * rules.speed;
             updateThingCount();
@@ -66,14 +69,18 @@
 
         function startLoop() {
             loopId = setInterval(loop, rules.rate); //run this once every 1000ms
-            //document.getElementById("buttonStartStop").value = "stop";
-            //document.getElementById("buttonStartStop").onclick = stopLoop;
         }
 
         function stopLoop() {
             clearInterval(loopId);
-            //document.getElementById("buttonStartStop").value = "start";
-            //document.getElementById("buttonStartStop").onclick = startLoop;
+        }
+
+        function autosave(enabled) {
+            if (enabled) {
+                autosaveLoopId = setInterval(loop, rules.saveInterval);
+            } else {
+                clearInterval(autosaveLoopId);
+            }
         }
 
         function clickThing() {
