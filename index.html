@@ -146,7 +146,7 @@
 
         function writeCookie() {
             data.date = Date.now();
-            document.cookie = 'data=' + JSON.stringify(data) + '; expires=Thu, 30 Aug 2023 12:00:00 UTC; path=/';
+            document.cookie = 'data=' + JSON.stringify(data) + '; SameSite=Strict; expires=Sun, Mo Jan 2024 12:00:00 UTC; path=/';
         }
 
         function readCookie() {
