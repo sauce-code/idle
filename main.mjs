@@ -49,7 +49,7 @@ function stopLoop() {
     clearInterval(loopId);
 }
 
-function autosave(enabled) {
+export function autosave(enabled) {
     if (enabled) {
         autosaveLoopId = setInterval(loop, rules.saveInterval);
     } else {
@@ -57,13 +57,13 @@ function autosave(enabled) {
     }
 }
 
-function clickThing() {
+export function clickThing() {
     data.things += rules.speed;
     updateThingCount();
     updateButtons();
 }
 
-function reset() {
+export function reset() {
     data = {
         things: 0,
         buildings: [0, 0, 0, 0, 0],
@@ -86,7 +86,7 @@ function updateButtons() {
     }
 }
 
-function buy(building, step) {
+export function buy(building, step) {
     data.things -= buffer.prices[building][step];
     buffer.tpsTotal += rules.buildings.bonus[building] * rules.buildings.steps[step];
     data.buildings[building] += rules.buildings.steps[step];
@@ -152,12 +152,12 @@ function setDate() {
     data.expires.setDate(Date.now() + 365);
 }
 
-function writeCookie() {
+export function writeCookie() {
     data.date = Date.now();
     document.cookie = 'data=' + JSON.stringify(data) + '; SameSite=Strict; expires=Sun, Mo Jan 2024 12:00:00 UTC; path=/';
 }
 
-function readCookie() {
+export function readCookie() {
     if (document.cookie === "") {
         console.log("was empty");
     } else {
@@ -191,7 +191,7 @@ function fillBuffer() {
     buffer.prices = 0;
 }
 
-function deleteCookie() {
+export function deleteCookie() {
     document.cookie = 'data=; SameSite=Strict; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
 
