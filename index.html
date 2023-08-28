@@ -19,15 +19,15 @@
 <body>
     <a class="github-fork-ribbon" href="https://github.com/sauce-code/idle" data-ribbon="Fork me on GitHub"
         title="Fork me on GitHub">Fork me on GitHub</a>
-    <input type="button" onclick="writeCookie()" value="save" />
-    <input type="button" onclick="readCookie()" value="load" />
-    <input type="button" onclick="deleteCookie()" value="delete" />
-    <input type="button" onclick="reset()" value="reset" />
-    <label id="tpsTotal">Autosave:</label>
-    <input type="checkbox" onclick="toggleAutosave()" value="reset" /><br />
-    <input type="image"
+    <input id="buttonSave" type="button" value="save" />
+    <input id="buttonLoad" type="button" value="load" />
+    <input id="buttonDelete" type="button" value="delete" />
+    <input id="buttonReset" type="button" value="reset" />
+    <label>Autosave:</label>
+    <input id="checkboxAutosave" type="checkbox"/><br />
+    <input id="clickImage" type="image"
         src="https://www.verbraucherzentrale.de/sites/default/files/inline-images/Einwegflaschen-Logo.jpg" width="200px"
-        height="200px" onclick="clickThing()"><br />
+        height="200px"><br />
     <label>Pfandflaschen:</label><br />
     <label id="thingCount">0</label><br />
     <label>Pfandflaschen pro Sekunde:</label><br />
@@ -41,7 +41,6 @@
         <th></th>
         <th></th>
     </table>
-    <script>main()</script>
 </body>
 
 </html>
