@@ -15,6 +15,7 @@ const buffer = {
     tpsTotal: 0,
     tps: [0, 0, 0, 0, 0],
     prices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+    upgrades: [0, 0, 0, 0, 0],
 }
 
 const rules = {
@@ -54,6 +55,7 @@ const rules = {
 
 const settings = {
     locale: "de-DE",
+    updateInterval: 100,
 }
 
 let loopId;
@@ -88,7 +90,13 @@ function reset() {
     data = {
         things: 0,
         buildings: [0, 0, 0, 0, 0],
-        upgrades: [0, 0, 0, 0, 0],
+        upgrades: [
+            [false, false, false],
+            [false, false, false],
+            [false, false, false],
+            [false, false, false],
+            [false, false, false],
+        ],
         date: null,
     }
     deleteCookie();
@@ -121,7 +129,12 @@ function buy(building, step) {
 }
 
 function upgrade(building, step) {
-
+    data.things -= getUpgradeCost(building, step);
+    data.upgrades[building][step] = true;
+    buffer.upgrades[building]++;
+    updateThingCount();
+    updateTps();
+    setTableUpgradesVisibility(building, step);
 }
 
 function updateThingCount() {
@@ -169,7 +182,7 @@ function updateTps(num) {
         buffer.tpsTotal = sum;
         document.getElementById("tpsTotal").innerHTML = buffer.tpsTotal.toLocaleString(settings.locale);
     } else {
-        buffer.tps[num] = data.buildings[num] * rules.buildings.bonus[num] * rules.upgrades.multiplier ** data.upgrades[num];
+        buffer.tps[num] = data.buildings[num] * rules.buildings.bonus[num] * rules.upgrades.incomeMultiplier ** buffer.upgrades[num];
         document.getElementById("tps" + num).innerHTML = buffer.tps[num].toLocaleString(settings.locale);
     }
 }
@@ -207,7 +220,7 @@ function getUpgradeCost(building, step) {
 
 function fillBuffer() {
 
-    buffer.tps[num] = data.buildings[num] * rules.buildings.bonus[num] * rules.upgrades.multiplier ** data.upgrades[num];
+    buffer.tps[num] = data.buildings[num] * rules.buildings.bonus[num] * rules.upgrades.multiplier ** buffer.upgrades[num];
     let sum = 0;
     for (let i = 0; i < rules.buildings.count; i++) {
         updateTps(i);
@@ -300,7 +313,6 @@ function initTableUpgrades() {
                     input.id = "upgrade-" + i + "-" + j;
                     input.type = "button";
                     input.value = "buy";
-                    input.disabled = true;
                     input.onclick = function () { upgrade(i, j) }
                     td.appendChild(input);
                 }
@@ -342,12 +354,17 @@ function setTableUpgradesVisibility(building, step) {
             setTableUpgradesVisibility(building, j);
         }
     } else {
-        if (!data.upgrades[building][step] && data.buildings[building] >= (step + 1) * rules.upgrades.step) {
+        if (data.upgrades[building][step]) {
+            document.getElementById("tableUpgradesRow" + building + "-" + step).style.display = "none";
+        } else if (data.buildings[building] >= (step + 1) * rules.upgrades.step) {
             document.getElementById("tableUpgradesRow" + building + "-" + step).style.display = "";
         }
     }
 }
 
+/**
+ * Initializes all fields, checks for existing savegame, links onclick events and prints all html elements.
+ */
 function init() {
     initTableBuildings();
     initTableUpgrades();
