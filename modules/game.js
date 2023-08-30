@@ -1,50 +1,32 @@
-let data = {
-    things: 0,
-    buildings: [0, 0, 0, 0, 0],
-    upgrades: [
-        [false, false, false],
-        [false, false, false],
-        [false, false, false],
-        [false, false, false],
-        [false, false, false],
-    ],
-    date: null,
-}
+let data;
 
-const buffer = {
-    tpsTotal: 0,
-    tps: [0, 0, 0, 0, 0],
-    prices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
-    upgrades: [0, 0, 0, 0, 0],
-}
+let buffer;
 
 const rules = {
     speed: 1,
-    rate: 1_000,
+    rate: 50,
     buildings: {
         count: 5,
         bonus: [1, 10, 100, 1_000, 10_000],
         cost: [10, 100, 1_000, 10_000, 100_000],
-        names: ["Obdachloser", "Festivalg&auml;nger", "Supermarkt", "M&uuml;lldeponie", "Ozean"],
-        costIncrement: .1,
-        steps: [1, 10, 50]
+        names: ["Obdachloser", "Mülleimer", "Festivalg&auml;nger", "Pfandautomat", "Glascontainer", "Supermarkt", "M&uuml;lldeponie", "Ozean", "2te Erde"],
+        namesPlural: ["Obdachlose", "Mülleimer", "Festivalg&auml;nger", "Pfandautomaten", "Glascontainer", "Superm&auml;rkte", "M&uuml;lldeponien", "Ozeane", "2te Erden"],
+        costIncrement: .15,
+        steps: [1, 10, 20]
     },
     upgrades: {
-        step: 2,
+        step: 20,
         count: [3, 3, 3, 3, 3],
         names: [
-            ["Vodka", "Agressives Betteln", "Handschuhe"],
-            ["b0", "b1", "b2"],
-            ["c0", "c1", "c2"],
-            ["d0", "d1", "d2"],
-            ["e0", "e1", "e2"],
-        ],
-        descriptions: [
-            ["desc a0", "desc a1", "desc a2"],
-            ["desc b0", "desc b1", "desc b2"],
-            ["desc c0", "desc c1", "desc c2"],
-            ["desc d0", "desc d1", "desc d2"],
-            ["desc e0", "desc e1", "desc e2"],
+            ["Vodka", "Agressives Betteln", "Handschuhe", "Sicherheitsflipflops", "'ne Mark", "Obdachlosenheim", "Kaffee"],
+            ["24/7 Leerungsdiesnt", "tolle Müllbeutel", "zweiter Boden", "schwarzes Loch"]
+            ["Auto", "Wacken-Ticket", "Trichter", "Zelt", "Dreistheit", "kein Schlaf", "fehlender Geruchssinn", "Dosenravioli"],
+            ["breitere Öffnung", "Anti-Stau-System", "schlaue Kunden", "tolle Mitarbeiter", "Assembler"],
+            ["tägliche Leerung", "zweiter Boden", "stündliche Leerung", "besserer Standort", "schwarzes Loch"],
+            ["Kinderarbeit", "verbessertes Kassensystem", "dumme Kunden", "Autobahnanbindung"],
+            ["fehlende Umweltauflagen", "Kenia", ""],
+            [""],
+            [""],
         ],
         cost: [1_000, 10_000, 100_000, 1_000_000, 10_000_000],
         incomeMultiplier: 2,
@@ -61,13 +43,15 @@ const settings = {
 let loopId;
 
 function loop() {
-    data.things += buffer.tpsTotal * rules.speed;
+    let now = new Date();
+    data.things += buffer.tpsTotal * rules.speed * (now - data.date) / 1_000;
+    data.date = now;
     updateThingCount();
     updateButtons();
 }
 
 function startLoop() {
-    loopId = setInterval(loop, rules.rate); //run this once every 1000ms
+    loopId = setInterval(loop, rules.rate);
 }
 
 function stopLoop() {
@@ -87,24 +71,63 @@ function clickThing() {
 }
 
 function reset() {
+    if (confirm("Are you sure?")) {
+        // data = {
+        //     things: 0,
+        //     buildings: [0, 0, 0, 0, 0],
+        //     upgrades: [
+        //         [false, false, false],
+        //         [false, false, false],
+        //         [false, false, false],
+        //         [false, false, false],
+        //         [false, false, false],
+        //     ],
+        //     date: null,
+        // }
+        resetData();
+        resetBuffer();
+        deleteCookie();
+        updateTps();
+        updatePrices();
+        updateThingCount();
+        updateBuildingCount();
+        updateButtons();
+        updateTableBuildingsVisibility();
+        updateTableUpgradesVisibility();
+    }
+}
+
+function resetData() {
     data = {
         things: 0,
-        buildings: [0, 0, 0, 0, 0],
-        upgrades: [
-            [false, false, false],
-            [false, false, false],
-            [false, false, false],
-            [false, false, false],
-            [false, false, false],
-        ],
+        buildings: new Array(rules.buildings.count),
+        upgrades: new Array(rules.buildings.count),
         date: null,
     }
-    deleteCookie();
-    updateTps();
-    updatePrices();
-    updateThingCount();
-    updateBuildingCount();
-    updateButtons();
+    for (let i = 0; i < rules.buildings.count; i++) {
+        data.buildings[i] = 0;
+        data.upgrades[i] = new Array(rules.upgrades.count);
+        for (let j = 0; j < rules.upgrades.count[i]; j++) {
+            data.upgrades[i][j] = false;
+        }
+    }
+}
+
+function resetBuffer() {
+    buffer = {
+        tpsTotal: 0,
+        tps: new Array(rules.buildings.count),
+        prices: new Array(rules.buildings.count),
+        upgrades: new Array(rules.buildings.count),
+    }
+    for (let i = 0; i < rules.buildings.count; i++) {
+        buffer.tps[i] = 0;
+        buffer.upgrades[i] = 0;
+        buffer.prices[i] = new Array(rules.upgrades.count[i]);
+        for (let j = 0; j < rules.upgrades.count[i]; j++) {
+            buffer.prices[i][j] = 0;
+        }
+    }
 }
 
 function updateButtons() {
@@ -124,8 +147,8 @@ function buy(building, step) {
     updatePrices(building);
     updateTps();
     updateButtons();
-    setTableBuildingsVisibility(building + 1);
-    setTableUpgradesVisibility(building);
+    updateTableBuildingsVisibility(Math.min((building + 1), (rules.buildings.count - 1)));
+    updateTableUpgradesVisibility(building);
 }
 
 function upgrade(building, step) {
@@ -134,11 +157,11 @@ function upgrade(building, step) {
     buffer.upgrades[building]++;
     updateThingCount();
     updateTps();
-    setTableUpgradesVisibility(building, step);
+    updateTableUpgradesVisibility(building, step);
 }
 
 function updateThingCount() {
-    document.getElementById("thingCount").innerHTML = data.things.toLocaleString(settings.locale);
+    document.getElementById("thingCount").innerHTML = Math.floor(data.things).toLocaleString(settings.locale);
 }
 
 function updateBuildingCount(building) {
@@ -203,6 +226,7 @@ function readCookie() {
         console.log("no cookie to read");
     } else {
         data = JSON.parse(document.cookie.slice(document.cookie.indexOf("=") + 1));
+        bufferUpgrades();
         updateTps();
         updatePrices();
         let timepassed = Date.now() - new Date(data.date);
@@ -210,25 +234,14 @@ function readCookie() {
         updateThingCount();
         updateBuildingCount();
         updateButtons();
+        updateTableBuildingsVisibility();
+        updateTableUpgradesVisibility();
         console.log("read cookie");
     }
 }
 
 function getUpgradeCost(building, step) {
     return 2 ** building ** step;
-}
-
-function fillBuffer() {
-
-    buffer.tps[num] = data.buildings[num] * rules.buildings.bonus[num] * rules.upgrades.multiplier ** buffer.upgrades[num];
-    let sum = 0;
-    for (let i = 0; i < rules.buildings.count; i++) {
-        updateTps(i);
-        sum += buffer.tps[i];
-    }
-    buffer.tpsTotal = sum;
-
-    buffer.prices = 0;
 }
 
 function deleteCookie() {
@@ -297,7 +310,8 @@ function initTableUpgrades() {
             }
             {
                 const td = document.createElement("td");
-                td.innerHTML = rules.upgrades.descriptions[i][j];
+                //td.innerHTML = rules.upgrades.descriptions[i][j];
+                td.innerHTML = `${rules.buildings.namesPlural[i]} arbeiten doppelt so schnell.`
                 tr.appendChild(td);
             }
             {
@@ -329,35 +343,47 @@ function initTableUpgrades() {
  * 
  * @param {number} row 
  */
-function setTableBuildingsVisibility(row) {
+function updateTableBuildingsVisibility(row) {
     if (row === undefined) {
         document.getElementById("tableBuildingsRow0").style.display = "";
         for (let i = 1; i < rules.buildings.count; i++) {
-            setTableBuildingsVisibility(i);
+            updateTableBuildingsVisibility(i);
         }
     } else {
         if (data.buildings[row - 1] && row < rules.buildings.count) {
             document.getElementById("tableBuildingsRow" + row).style.display = "";
+        } else {
+            document.getElementById("tableBuildingsRow" + row).style.display = "none";
         }
     }
 }
 
-function setTableUpgradesVisibility(building, step) {
+function updateTableUpgradesVisibility(building, step) {
     if (building === undefined) {
         for (let i = 0; i < rules.buildings.count; i++) {
             for (let j = 0; j < rules.upgrades.count[i]; j++) {
-                setTableUpgradesVisibility(i, j);
+                updateTableUpgradesVisibility(i, j);
             }
         }
     } else if (step === undefined) {
         for (let j = 0; j < rules.upgrades.count[building]; j++) {
-            setTableUpgradesVisibility(building, j);
+            updateTableUpgradesVisibility(building, j);
         }
     } else {
-        if (data.upgrades[building][step]) {
-            document.getElementById("tableUpgradesRow" + building + "-" + step).style.display = "none";
-        } else if (data.buildings[building] >= (step + 1) * rules.upgrades.step) {
+        if (!data.upgrades[building][step] && data.buildings[building] >= (step + 1) * rules.upgrades.step) {
             document.getElementById("tableUpgradesRow" + building + "-" + step).style.display = "";
+        } else {
+            document.getElementById("tableUpgradesRow" + building + "-" + step).style.display = "none";
+        }
+    }
+}
+
+function bufferUpgrades() {
+    for (let i = 0; i < rules.buildings.count; i++) {
+        for (let j = 0; j < rules.upgrades.count[i]; j++) {
+            if (data.upgrades[i][j]) {
+                buffer.upgrades[i]++;
+            }
         }
     }
 }
@@ -366,6 +392,8 @@ function setTableUpgradesVisibility(building, step) {
  * Initializes all fields, checks for existing savegame, links onclick events and prints all html elements.
  */
 function init() {
+    resetData();
+    resetBuffer();
     initTableBuildings();
     initTableUpgrades();
     updatePrices();
@@ -379,8 +407,8 @@ function init() {
     document.getElementById("buttonReset").onclick = reset;
     document.getElementById("clickImage").onclick = clickThing;
     document.getElementById("tableBuildingsRow" + 0);
-    setTableBuildingsVisibility();
-    setTableUpgradesVisibility();
+    updateTableBuildingsVisibility();
+    updateTableUpgradesVisibility();
     console.log("executed init");
 }
 
