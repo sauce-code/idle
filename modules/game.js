@@ -80,20 +80,6 @@ function loop() {
     updateButtons();
 }
 
-function startLoop() {
-    loopId = setInterval(loop, settings.updateInterval);
-}
-
-function stopLoop() {
-    clearInterval(loopId);
-}
-
-function loopAutosave() {
-    if (document.getElementById("checkboxAutosave").checked) {
-        writeCookie();
-    }
-}
-
 function clickThing() {
     data.things += settings.gameSpeedFactor;
     updateThingCount();
@@ -477,15 +463,14 @@ function init() {
     initTableBuildings();
     initTableUpgrades();
     updatePrices();
-    startLoop();
+    setInterval(loop, settings.updateInterval);
     readCookie();
     window.addEventListener("beforeunload", function () { writeCookie() });
-    setInterval(loopAutosave, settings.intervalSave);
-    document.getElementById("buttonSave").onclick = writeCookie;
-    document.getElementById("buttonLoad").onclick = readCookie;
-    document.getElementById("buttonDelete").onclick = deleteCookie;
-    document.getElementById("buttonReset").onclick = reset;
-    document.getElementById("clickImage").onclick = clickThing;
+    setInterval(writeCookie, settings.intervalSave);
+    document.getElementById("buttonReset").addEventListener("click", function () { reset() });
+    document.getElementById("clickImage").addEventListener("click", function () { clickThing() });
+    //document.getElementById("buttonReset").onclick = reset;
+    //document.getElementById("clickImage").onclick = clickThing;
     updateTableBuildingsVisibility();
     updateTableUpgradesVisibility();
     console.log("executed init");
