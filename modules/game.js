@@ -6,76 +6,76 @@ const buildings = [
     {
         name: "Obdachloser",
         namePlural: "Obdachlose",
-        upgrades: ["Vodka", "Agressives Betteln", "Handschuhe", "Sicherheitsflipflops", "'ne Mark", "Obdachlosenheim", "Kaffee"],
+        upgrades: ["Vodka", "Agressives Betteln", "Handschuhe", "Sicherheitsflipflops", "'ne Mark", "Obdachlosenheim", "Kaffee", "Schlafsack", "Brücke", "Bahnhof", "Stammplatz", "Netto", "Hund", "Polizeieskorte",
+            "Vodka", "Agressives Betteln", "Handschuhe", "Sicherheitsflipflops", "'ne Mark", "Obdachlosenheim", "Kaffee", "Schlafsack", "Brücke", "Bahnhof", "Stammplatz", "Netto", "Hund", "Polizeieskorte"],
     },
     {
         name: "Festivalgänger",
         namePlural: "Festivalgänger",
-        upgrades: ["Auto", "Wacken-Ticket", "Trichter", "Zelt", "Dreistheit", "kein Schlaf", "fehlender Geruchssinn", "Dosenravioli"],
+        upgrades: ["Happiness-Ticket", "Auto", "Wacken-Ticket", "Trichter", "Zelt", "Dreistheit", "kein Schlaf", "fehlender Geruchssinn", "Dosenravioli", "Musikgeschmack", "Energy-Drinks", "pubertäres Verhalten", "Müllsäcke",
+            "Happiness-Ticket", "Auto", "Wacken-Ticket", "Trichter", "Zelt", "Dreistheit", "kein Schlaf", "fehlender Geruchssinn", "Dosenravioli", "Musikgeschmack", "Energy-Drinks", "pubertäres Verhalten", "Müllsäcke"],
     },
     {
         name: "Pfandautomat",
         namePlural: "Pfandautomaten",
-        upgrades: ["breitere Öffnung", "Anti-Stau-System", "schlaue Kunden", "tolle Mitarbeiter", "Assembler"],
+        upgrades: ["breitere Öffnung", "Anti-Stau-System", "schlaue Kunden", "tolle Mitarbeiter", "Assembler", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum"],
     },
     {
         name: "Glascontainer",
         namePlural: "Glascontainer",
-        upgrades: ["tägliche Leerung", "zweiter Boden", "stündliche Leerung", "besserer Standort", "schwarzes Loch"],
+        upgrades: ["tägliche Leerung", "zweiter Boden", "stündliche Leerung", "besserer Standort", "schwarzes Loch", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum"],
     },
     {
         name: "Supermarkt",
         namePlural: "Supermärkte",
-        upgrades: ["Kinderarbeit", "verbessertes Kassensystem", "dumme Kunden", "Autobahnanbindung"],
+        upgrades: ["Kinderarbeit", "verbessertes Kassensystem", "dumme Kunden", "Autobahnanbindung", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum"],
     },
     {
         name: "M&uuml;lldeponie",
         namePlural: "M&uuml;lldeponien",
-        upgrades: ["fehlende Umweltauflagen", "", ""],
+        upgrades: ["fehlende Umweltauflagen", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum"],
     },
     {
         name: "Panama",
         namePlural: "Panamas",
-        upgrades: ["lorem ipsum", "lorem ipsum", "lorem ipsum"],
+        upgrades: ["lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum"],
     },
     {
         name: "Ozean",
         namePlural: "Ozeane",
-        upgrades: ["lorem ipsum", "lorem ipsum", "lorem ipsum"],
+        upgrades: ["lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum"],
     },
     {
         name: "Zweite Erde",
         namePlural: "Zweite Erden",
-        upgrades: ["lorem ipsum", "lorem ipsum", "lorem ipsum"],
+        upgrades: ["lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum"],
     }
 ];
 
 const rules = {
     buildingIncomeBase: 0.1,
-    buildingIncomeFactor: 8,
+    buildingIncomeFactor: 9,
     buildingCostBase: 10,
-    buildingCostFactorNextLvl: 13,
-    buildingCostFactorSameLvl: 1.15,
-    buildingUpgradeRequiredBuildings: 20,
+    buildingCostFactorNextLvl: 31,
+    buildingCostFactorSameLvl: 1.17,
+    buildingUpgradeRequiredBuildings: 10,
     buildingUpgradeIncomeFactor: 2,
-    buildingUpgradeCostFactor: 7,
+    buildingUpgradeCostFactor: 4,
     buildingUpgradeEntranceRequirement: 2,
-    buildingBuySteps: [1, 10, 20],
 }
 
 const settings = {
     locale: "de-DE",
-    gameSpeedFactor: 100,
+    gameSpeedFactor: 1,
     updateInterval: 50,
     intervalSave: 10_000,
+    digitThreshold: 10,
+    buildingBuySteps: [1, 10, 20],
 }
 
 let loopId;
 
 function loop() {
-    let now = new Date();
-    data.things += buffer.tpsTotal * settings.gameSpeedFactor * (now - data.date) / 1_000;
-    data.date = now;
     updateThingCount();
     updateButtons();
 }
@@ -165,8 +165,8 @@ function resetBuffer() {
     for (let i = 0; i < buildings.length; i++) {
         buffer.tps[i] = 0;
         buffer.upgrades[i] = 0;
-        buffer.prices[i] = new Array(rules.buildingBuySteps);
-        for (let j = 0; j < rules.buildingBuySteps; j++) {
+        buffer.prices[i] = new Array(settings.buildingBuySteps);
+        for (let j = 0; j < settings.buildingBuySteps; j++) {
             buffer.prices[i][j] = 0;
         }
         buffer.pricesUpgrades[i] = new Array(buildings[i].upgrades.length);
@@ -178,7 +178,7 @@ function resetBuffer() {
 
 function updateButtons() {
     for (let i = 0; i < buildings.length; i++) {
-        for (let j = 0; j < rules.buildingBuySteps.length; j++) {
+        for (let j = 0; j < settings.buildingBuySteps.length; j++) {
             document.getElementById("buy-" + i + "-" + j).disabled = (buffer.prices[i][j] > data.things);
 
         }
@@ -190,8 +190,8 @@ function updateButtons() {
 
 function buy(building, step) {
     data.things -= buffer.prices[building][step];
-    buffer.tpsTotal += calcBuildingIncome(building) * rules.buildingBuySteps[step];
-    data.buildings[building] += rules.buildingBuySteps[step];
+    buffer.tpsTotal += calcBuildingIncome(building) * settings.buildingBuySteps[step];
+    data.buildings[building] += settings.buildingBuySteps[step];
     revealBuildings(building);
     updateThingCount();
     updateBuildingCount(building);
@@ -212,7 +212,10 @@ function upgrade(building, step) {
 }
 
 function updateThingCount() {
-    document.getElementById("thingCount").innerHTML = format(data.things);
+    let now = new Date();
+    data.things += buffer.tpsTotal * settings.gameSpeedFactor * (now - data.date) / 1_000;
+    data.date = now;
+    document.getElementById("thingCount").innerHTML = format(data.things, false);
 }
 
 function updateBuildingCount(building) {
@@ -231,9 +234,9 @@ function updatePrices(building) {
             updatePrices(i);
         }
     } else {
-        for (let i = 0; i < rules.buildingBuySteps.length; i++) {
+        for (let i = 0; i < settings.buildingBuySteps.length; i++) {
             let sum = 0;
-            for (let j = 0; j < rules.buildingBuySteps[i]; j++) {
+            for (let j = 0; j < settings.buildingBuySteps[i]; j++) {
                 sum += calcBuildingCost(building, data.buildings[building] + j);
             }
             buffer.prices[building][i] = sum;
@@ -242,8 +245,8 @@ function updatePrices(building) {
     }
 }
 
-function updateTps(num) {
-    if (num === undefined) {
+function updateTps(building) {
+    if (building === undefined) {
         let sum = 0;
         for (let i = 0; i < buildings.length; i++) {
             updateTps(i);
@@ -252,8 +255,8 @@ function updateTps(num) {
         buffer.tpsTotal = sum;
         document.getElementById("tpsTotal").innerHTML = format(buffer.tpsTotal);
     } else {
-        buffer.tps[num] = data.buildings[num] * calcBuildingIncome(num) * rules.buildingUpgradeIncomeFactor ** buffer.upgrades[num];
-        document.getElementById("tps" + num).innerHTML = format(buffer.tps[num]);
+        buffer.tps[building] = data.buildings[building] * calcBuildingIncome(building) * rules.buildingUpgradeIncomeFactor ** buffer.upgrades[building];
+        document.getElementById("tps" + building).innerHTML = format(buffer.tps[building]);
     }
 }
 
@@ -276,8 +279,6 @@ function readCookie() {
         bufferUpgrades();
         updateTps();
         updatePrices();
-        let timepassed = Date.now() - new Date(data.date);
-        data.things += Math.floor((timepassed) / settings.updateInterval) * buffer.tpsTotal;
         updateThingCount();
         updateBuildingCount();
         updateButtons();
@@ -295,6 +296,8 @@ function revealBuildings(building) {
     } else {
         if (data.buildings[building] > 0) {
             document.getElementById("buildingName" + building).innerHTML = buildings[building].name;
+        } else {
+            document.getElementById("buildingName" + building).innerHTML = "?????";
         }
     }
 }
@@ -317,32 +320,32 @@ function initTableBuildings() {
         {
             const td = document.createElement("td");
             td.id = "buildingCount" + i;
-            td.setAttribute("style", "text-align:right;");
+            td.classList.add("cell-number");
             td.innerHTML = data.buildings[i];
             tr.appendChild(td);
         }
         {
             const td = document.createElement("td");
             td.id = "tps" + i;
-            td.setAttribute("style", "text-align:right;");
+            td.classList.add("cell-number");
             td.innerHTML = buffer.tps[i];
             tr.appendChild(td);
         }
         {
             const td = document.createElement("td");
             td.id = "buildingCost" + i;
-            td.setAttribute("style", "text-align:right;");
+            td.classList.add("cell-number");
             td.innerHTML = calcBuildingCost(i, data.buildings[i]);
             tr.appendChild(td);
         }
 
-        for (let j = 0; j < rules.buildingBuySteps.length; j++) {
+        for (let j = 0; j < settings.buildingBuySteps.length; j++) {
             const td = document.createElement("td");
             {
                 const input = document.createElement("input");
                 input.id = "buy-" + i + "-" + j;
                 input.type = "button";
-                input.value = "buy " + rules.buildingBuySteps[j];
+                input.value = "buy " + settings.buildingBuySteps[j];
                 input.disabled = true;
                 input.onclick = function () { buy(i, j) }
                 td.appendChild(input);
@@ -371,7 +374,7 @@ function initTableUpgrades() {
             }
             {
                 const td = document.createElement("td");
-                td.setAttribute("style", "text-align:right;");
+                td.classList.add("cell-number");
                 td.innerHTML = format(calcUpgradeCost(i, j));
                 tr.appendChild(td);
             }
@@ -414,11 +417,15 @@ function updateTableBuildingsVisibility(row) {
     }
 }
 
-function format(number) {
-    if (number > 5) {
-        return Math.floor(number).toLocaleString(settings.locale);
+function format(number, showDigits) {
+    if (showDigits === undefined) {
+        return format(number, true);
     } else {
-        return number.toLocaleString(settings.locale);
+        if (showDigits && number < settings.digitThreshold) {
+            return number.toLocaleString(settings.locale);
+        } else {
+            return Math.floor(number).toLocaleString(settings.locale);
+        }
     }
 }
 
@@ -479,15 +486,9 @@ function init() {
     document.getElementById("buttonDelete").onclick = deleteCookie;
     document.getElementById("buttonReset").onclick = reset;
     document.getElementById("clickImage").onclick = clickThing;
-    document.getElementById("tableBuildingsRow" + 0);
     updateTableBuildingsVisibility();
     updateTableUpgradesVisibility();
     console.log("executed init");
-    // for (let i = 0; i < buildings.length; i++) {
-    //     for (let j = 0; j < buildings[i].upgrades.length; j++) {
-    //         console.log(`i${i} j${j} ${buffer.pricesUpgrades[i][j]}`)
-    //     }
-    // }
 }
 
 export { init }
