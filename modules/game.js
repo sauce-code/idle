@@ -1,59 +1,251 @@
 import { write, read, erase } from './cookie.js';
 
+/**
+ * Stores all important data that describes a player's progress.
+ */
 let data;
 
+/**
+ * Stores all data that can be calculated by the data field to save unnecessary operations.
+ */
 let buffer;
 
+/**
+ * Describes all buildings and thir upgrades in the game.
+ */
 const buildings = [
     {
         name: "Obdachloser",
         namePlural: "Obdachlose",
-        upgrades: ["Vodka", "Agressives Betteln", "Handschuhe", "Sicherheitsflipflops", "'ne Mark", "Obdachlosenheim", "Kaffee", "Schlafsack", "Brücke", "Bahnhof", "Stammplatz", "Netto", "Hund", "Polizeieskorte",
-            "Vodka", "Agressives Betteln", "Handschuhe", "Sicherheitsflipflops", "'ne Mark", "Obdachlosenheim", "Kaffee", "Schlafsack", "Brücke", "Bahnhof", "Stammplatz", "Netto", "Hund", "Polizeieskorte"],
+        upgrades: [
+            "Vodka",
+            "Agressives Betteln",
+            "Handschuhe",
+            "Sicherheitsflipflops",
+            "'ne Mark",
+            "Crack",
+            "Obdachlosenheim",
+            "Kaffee",
+            "Schlafsack",
+            "Brücke",
+            "Bahnhof",
+            "Stammplatz",
+            "Netto",
+            "Hund",
+            "Polizeieskorte",
+            "lorem ipsum",
+            "lorem ipsum",
+            "lorem ipsum",
+            "lorem ipsum",
+            "lorem ipsum",
+        ]
     },
     {
         name: "Festivalgänger",
         namePlural: "Festivalgänger",
-        upgrades: ["Happiness-Ticket", "Auto", "Wacken-Ticket", "Trichter", "Zelt", "Dreistheit", "kein Schlaf", "fehlender Geruchssinn", "Dosenravioli", "Musikgeschmack", "Energy-Drinks", "pubertäres Verhalten", "Müllsäcke",
-            "Happiness-Ticket", "Auto", "Wacken-Ticket", "Trichter", "Zelt", "Dreistheit", "kein Schlaf", "fehlender Geruchssinn", "Dosenravioli", "Musikgeschmack", "Energy-Drinks", "pubertäres Verhalten", "Müllsäcke"],
+        upgrades: [
+            "Happiness-Ticket",
+            "Auto",
+            "Wacken-Ticket",
+            "Trichter",
+            "Zelt",
+            "Sex",
+            "Dreistheit",
+            "Ritalin",
+            "kein Schlaf",
+            "fehlender Geruchssinn",
+            "Dosenravioli",
+            "Musikgeschmack",
+            "Energy-Drinks",
+            "pubertäres Verhalten",
+            "Müllsäcke",
+            "lorem ipsum",
+            "lorem ipsum",
+            "lorem ipsum",
+            "lorem ipsum",
+        ]
     },
     {
         name: "Pfandautomat",
         namePlural: "Pfandautomaten",
-        upgrades: ["breitere Öffnung", "Anti-Stau-System", "schlaue Kunden", "tolle Mitarbeiter", "Assembler", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum"],
+        upgrades: [
+            "Breitere Öffnung",
+            "Anti-Stau-System",
+            "Schlaue Kunden",
+            "Hilfsbereite Mitarbeiter",
+            "Assembler",
+            "Peitschen",
+            "Diebstahlschutz",
+            "Zweite Öffnung",
+            "Deposit Droid",
+            "Bottle Bounty Bot",
+            "Can Credit Contraption",
+            "Refund Robot",
+            "Coin-Return Wizard",
+            "Refundinator Machine",
+            "Penny Pincher's Pal",
+            "Empties Enchanter",
+            "Token Treasure Trove",
+            "Bottle Bucks Buddy",
+        ],
     },
     {
         name: "Glascontainer",
         namePlural: "Glascontainer",
-        upgrades: ["tägliche Leerung", "zweiter Boden", "stündliche Leerung", "besserer Standort", "schwarzes Loch", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum"],
+        upgrades: [
+            "Wöchentliche Leerung",
+            "Tägliche Leerung",
+            "Zweiter Boden",
+            "Stündliche Leerung",
+            "Besserer Standort",
+            "Schwarzes Loch",
+            "Glass Goblin Hideout",
+            "Bottle Bank Bonanza",
+            "Jar Jamboree",
+            "Canister Carnival",
+            "Pane Party Pitstop",
+            "Clinker Collector's Corner",
+            "Shatter Stopover Spot",
+            "Mug Mingle Zone",
+            "Pint Pot Parade Ground",
+        ],
     },
     {
         name: "Supermarkt",
         namePlural: "Supermärkte",
-        upgrades: ["Kinderarbeit", "verbessertes Kassensystem", "dumme Kunden", "Autobahnanbindung", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum"],
+        upgrades: [
+            "Kinderarbeit",
+            "Verbessertes Kassensystem",
+            "Dumme Kunden",
+            "Autobahnanbindung",
+            "Manager",
+            "Aisle Adventures",
+            "Shopping Cart Shenanigans",
+            "Checkout Line Comedy",
+            "Cereal Aisle Surprises",
+            "Frozen Food Follies",
+            "Coupon Craziness",
+            "Express Lane Exasperation",
+            "Price Tag Perplexities",
+            "Produce Section Peculiarities",
+        ],
+    },
+    {
+        name: "HaDiKo",
+        namePlural: "HaDiKos",
+        upgrades: [
+            "GeMa",
+            "Andr&eacute;",
+            "i2",
+            "K5 Bar",
+            "K2 Hausfest",
+            "K7",
+            "Dormitory Drama",
+            "Residence Hall Romp",
+            "Roommate Roulette",
+            "Common Area Capers",
+            "Cafeteria Chronicles",
+            "Launderette Lunacy",
+            "Quiet Hours Quandary",
+            "RA Revelations",
+            "Freshman Follies",
+        ],
     },
     {
         name: "M&uuml;lldeponie",
         namePlural: "M&uuml;lldeponien",
-        upgrades: ["fehlende Umweltauflagen", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum"],
+        upgrades: [
+            "Rattenk&ouml;der",
+            "Afrikaner",
+            "fehlende Umweltauflagen",
+            "Kipplader",
+            "Abfallberg",
+            "Schrottplatz",
+            "Müllkippe",
+            "Trash-Palast",
+            "Deponie",
+            "Klüngelhaufen",
+            "Sammelsurium der Sinnlosigkeit",
+            "Ressourcen-Resort",
+            "Plastik-Paradies",
+            "Unordnungs-Olympics",
+        ],
+    },
+    {
+        name: "Flaschenfabrik",
+        namePlural: "Flaschenfabriken",
+        upgrades: [
+            "Produktionspapierwalze",
+            "Zahnrad-Zentrale",
+            "Fließband-Fieber",
+            "Roboter-Rendezvous",
+            "Qualm-Quelle",
+            "Schrauben-Sinfonie",
+            "Ziegelstein-Zauberei",
+            "Fabrik-Fata Morgana",
+            "Dampfmaschinen-Disco",
+            "Rostiges Rätselreich",
+            "Montage-Märchenland",
+            "Zylinder-Zirkus",
+            "Schrauben-Spaßstation",
+        ],
     },
     {
         name: "Panama",
         namePlural: "Panamas",
-        upgrades: ["lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum"],
+        upgrades: [
+            "Strand voller Pfand",
+            "Touristenf&uuml;hrer",
+            "Panamapapier",
+            "Panamakappe",
+            "Panamarama",
+            "Panamarama-Drama",
+            "Panamadrama",
+            "Panamabande",
+            "Panamamama",
+            "Panama-Hut",
+            "Panama-Kanal",
+            "Panamahose",
+        ],
     },
     {
         name: "Ozean",
         namePlural: "Ozeane",
-        upgrades: ["lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum"],
+        upgrades: [
+            "Plastiktitanik",
+            "Wellenwirbel",
+            "Meeresmonster",
+            "Schatzsuche",
+            "Gezeitengeplänkel",
+            "Walfischtango",
+            "Neptuns Spielplatz",
+            "Muschelmagie",
+            "Seegurken-Spuk",
+            "Krakenkaraoke",
+            "Pinguin-Poolparty",
+        ],
     },
     {
         name: "Zweite Erde",
         namePlural: "Zweite Erden",
-        upgrades: ["lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum", "lorem ipsum"],
+        upgrades: [
+            "Doppelgänger-Planet",
+            "Terra Dos",
+            "Bizarro-Erde",
+            "Erdling 2.0",
+            "Erd-Zwo",
+            "Die Andere Welt",
+            " Erdopia",
+            "Erde Deluxe",
+            "Terra Zwei: Die Rückkehr",
+            "Planet Xerox",
+        ],
     }
 ];
 
+/**
+ * Describes the rules, how the buildings in the game behave.
+ */
 const rules = {
     buildingIncomeBase: 0.1,
     buildingIncomeFactor: 9,
@@ -66,31 +258,43 @@ const rules = {
     buildingUpgradeEntranceRequirement: 2,
 }
 
+/**
+ * Describes all client-sided settings that do not affect the game logic.
+ */
 const settings = {
     locale: "de-DE",
     gameSpeedFactor: 1,
-    updateInterval: 50,
+    intervalTick: 50,
     intervalSave: 10_000,
     digitThreshold: 10,
     buildingBuySteps: [1, 10, 20],
     cookieExpireDays: 365,
 }
 
-let loopId;
-
-function loop() {
+/**
+ * A tick upgdates the current thing count and updates relevant UI that can be activated
+ * by reaching certain thing counts.
+ */
+function tick() {
     updateThingCount();
     updateButtons();
 }
 
+/**
+ * Triggers whenever the player clicks the image.
+ */
 function clickThing() {
     data.things += settings.gameSpeedFactor + buffer.tpsTotal;
     updateThingCount();
     updateButtons();
 }
 
+/**
+ * Resets the whole game. Asks the player for permission first.
+ */
 function reset() {
-    if (confirm("Are you sure?")) {
+    if (confirm("Are you sure? All progress will be lost!")) {
+        // order matters here!
         resetData();
         resetBuffer();
         bufferUpgradePrices();
@@ -105,13 +309,18 @@ function reset() {
     }
 }
 
+/**
+ * Calculates the current income of a building
+ * @param {number} building index of the building
+ * @returns calculated income
+ */
 function calcBuildingIncome(building) {
     return rules.buildingIncomeBase * (rules.buildingIncomeFactor ** building);
 }
 
 /**
  * Calculates the cost of a given building.
- * @param {number} building given building
+ * @param {number} building index of the building
  * @param {number} count count of existing buildings of that kind
  * @returns calculated cost
  */
@@ -123,10 +332,19 @@ function calcBuildingCost(building, count) {
     }
 }
 
+/**
+ * Calculates the cost of a building's upgrade.
+ * @param {number} building index of the building
+ * @param {number} upgrade index of the upgrade
+ * @returns calculated upgrade cost
+ */
 function calcUpgradeCost(building, upgrade) {
     return calcBuildingCost(building, upgrade * rules.buildingUpgradeRequiredBuildings) * rules.buildingUpgradeCostFactor;
 }
 
+/**
+ * Resets {@link data} to null values.
+ */
 function resetData() {
     data = {
         date: Date.now(),
@@ -143,6 +361,9 @@ function resetData() {
     }
 }
 
+/**
+ * Resets {@link buffer} to null values.
+ */
 function resetBuffer() {
     buffer = {
         tpsTotal: 0.0,
@@ -165,6 +386,9 @@ function resetBuffer() {
     }
 }
 
+/**
+ * Updates all of the UI's buttons' disabled property.
+ */
 function updateButtons() {
     for (let i = 0; i < buildings.length; i++) {
         for (let j = 0; j < settings.buildingBuySteps.length; j++) {
@@ -177,11 +401,16 @@ function updateButtons() {
     }
 }
 
+/**
+ * Buys [{@link step}] [{@link building}s].
+ * @param {number} building index of the building
+ * @param {number} step index of the buy step
+ */
 function buy(building, step) {
     data.things -= buffer.prices[building][step];
     buffer.tpsTotal += calcBuildingIncome(building) * settings.buildingBuySteps[step];
     data.buildings[building] += settings.buildingBuySteps[step];
-    revealBuildings(building);
+    updateBuildingsNameVisibility(building);
     updateThingCount();
     updateBuildingCount(building);
     updatePrices(building);
@@ -191,6 +420,11 @@ function buy(building, step) {
     updateTableUpgradesVisibility(building);
 }
 
+/**
+ * Buys the {@link step}th upgrade of {@link building}.
+ * @param {number} building index of the building
+ * @param {number} step index of the upgrade
+ */
 function upgrade(building, step) {
     data.things -= calcUpgradeCost(building, step);
     data.upgrades[building][step] = true;
@@ -200,6 +434,9 @@ function upgrade(building, step) {
     updateTableUpgradesVisibility(building, step);
 }
 
+/**
+ * Updates the thing count based on how much time has passed and updates linked UI elements.
+ */
 function updateThingCount() {
     const now = Date.now();
     data.things += buffer.tpsTotal * settings.gameSpeedFactor * (now - data.date) / 1_000;
@@ -207,6 +444,11 @@ function updateThingCount() {
     document.getElementById("thingCount").innerHTML = format(data.things, false);
 }
 
+/**
+ * Updates the current count of a building and updates linked UI elements. If {@link building}
+ * is undefinded, this will be done for all buildings.
+ * @param {number} building index of the building 
+ */
 function updateBuildingCount(building) {
     if (building === undefined) {
         for (let i = 0; i < buildings.length; i++) {
@@ -217,6 +459,11 @@ function updateBuildingCount(building) {
     }
 }
 
+/**
+ * Updates the current prices of a building and updates linked UI elements. If {@link building}
+ * is undefinded, this will be done for all buildings.
+ * @param {number} building index of the building
+ */
 function updatePrices(building) {
     if (building === undefined) {
         for (let i = 0; i < buildings.length; i++) {
@@ -234,6 +481,11 @@ function updatePrices(building) {
     }
 }
 
+/**
+ * Updates the current income of a building and updates linked UI elements. If {@link building}
+ * is undefined, this will be done for all buildings.
+ * @param {number} building index of the building
+ */
 function updateTps(building) {
     if (building === undefined) {
         let sum = 0;
@@ -249,11 +501,42 @@ function updateTps(building) {
     }
 }
 
+/**
+ * Formats a number based on {@link settings.locale}. If {@link showDecimalPlaces} and {@link number} 
+ * &lt; {@link settings.digitThreshold}, decimal places will be shown.
+ * @param {number} number the number to be formatted
+ * @param {boolean} showDecimalPlaces true, if decimal places shall be shown
+ * @returns the formatted number
+ */
+function format(number, showDecimalPlaces) {
+    if (showDecimalPlaces === undefined) {
+        return format(number, true);
+    } else {
+        if (showDecimalPlaces && number < settings.digitThreshold) {
+            return number.toLocaleString(settings.locale);
+        } else {
+            return Math.floor(number).toLocaleString(settings.locale);
+        }
+    }
+}
+
+/**
+ * Saves the current game state.
+ */
+function save() {
+    write("data", JSON.stringify(data), settings.cookieExpireDays);
+    console.log("saved gamestate");
+}
+
+/**
+ * Loads the gamestate. If there is none, nothing will happen.
+ */
 function load() {
     const cookie = read("data");
     if (cookie === undefined) {
         console.log("no saved data to read");
     } else {
+        // order matters here!
         data = JSON.parse(cookie);
         bufferUpgrades();
         updateTps();
@@ -263,15 +546,20 @@ function load() {
         updateButtons();
         updateTableBuildingsVisibility();
         updateTableUpgradesVisibility();
-        revealBuildings();
+        updateBuildingsNameVisibility();
         console.log("loaded gamestate");
     }
 }
 
-function revealBuildings(building) {
+/**
+ * Updates the visibility of a building. If {@link building} is undefined, this will be
+ * done for all buildings.
+ * @param {number} building index of the building 
+ */
+function updateBuildingsNameVisibility(building) {
     if (building === undefined) {
         for (let i = 0; i < buildings.length; i++) {
-            revealBuildings(i);
+            updateBuildingsNameVisibility(i);
         }
     } else {
         if (data.buildings[building] > 0) {
@@ -282,6 +570,9 @@ function revealBuildings(building) {
     }
 }
 
+/**
+ * Initializes the HTML child elements for table "buildings".
+ */
 function initTableBuildings() {
     for (let i = 0; i < buildings.length; i++) {
         const tr = document.createElement("tr");
@@ -332,6 +623,9 @@ function initTableBuildings() {
     }
 }
 
+/**
+ * Initializes the HTML child elements for table "upgrades".
+ */
 function initTableUpgrades() {
     for (let i = 0; i < buildings.length; i++) {
         for (let j = 0; j < buildings[i].upgrades.length; j++) {
@@ -393,38 +687,36 @@ function updateTableBuildingsVisibility(row) {
     }
 }
 
-function format(number, showDigits) {
-    if (showDigits === undefined) {
-        return format(number, true);
-    } else {
-        if (showDigits && number < settings.digitThreshold) {
-            return number.toLocaleString(settings.locale);
-        } else {
-            return Math.floor(number).toLocaleString(settings.locale);
-        }
-    }
-}
-
-function updateTableUpgradesVisibility(building, step) {
+/**
+ * Updates the visibility of an upgrade HTML &lt;tr&gt; element. If {@link building}
+ * is undefined, this will be done for all buildings. If {@link upgrade} is undefined,
+ * this will be done for all upgrades of the corresponding building.
+ * @param {number} building index of the building
+ * @param {number} upgrade index of the upgrade
+ */
+function updateTableUpgradesVisibility(building, upgrade) {
     if (building === undefined) {
         for (let i = 0; i < buildings.length; i++) {
             for (let j = 0; j < buildings[i].upgrades.length; j++) {
                 updateTableUpgradesVisibility(i, j);
             }
         }
-    } else if (step === undefined) {
+    } else if (upgrade === undefined) {
         for (let j = 0; j < buildings[building].upgrades.length; j++) {
             updateTableUpgradesVisibility(building, j);
         }
     } else {
-        if (!data.upgrades[building][step] && data.buildings[building] >= Math.max(rules.buildingUpgradeEntranceRequirement, step * rules.buildingUpgradeRequiredBuildings)) {
-            document.getElementById("tableUpgradesRow" + building + "-" + step).style.display = "";
+        if (!data.upgrades[building][upgrade] && data.buildings[building] >= Math.max(rules.buildingUpgradeEntranceRequirement, upgrade * rules.buildingUpgradeRequiredBuildings)) {
+            document.getElementById("tableUpgradesRow" + building + "-" + upgrade).style.display = "";
         } else {
-            document.getElementById("tableUpgradesRow" + building + "-" + step).style.display = "none";
+            document.getElementById("tableUpgradesRow" + building + "-" + upgrade).style.display = "none";
         }
     }
 }
 
+/**
+ * Buffers the count of all upgrades that have been bought so far.
+ */
 function bufferUpgrades() {
     for (let i = 0; i < buildings.length; i++) {
         for (let j = 0; j < buildings[i].upgrades.length; j++) {
@@ -435,6 +727,9 @@ function bufferUpgrades() {
     }
 }
 
+/**
+ * Buffers the prices of all upgrades that exist in the game.
+ */
 function bufferUpgradePrices() {
     for (let i = 0; i < buildings.length; i++) {
         for (let j = 0; j < buildings[i].upgrades.length; j++) {
@@ -443,29 +738,25 @@ function bufferUpgradePrices() {
     }
 }
 
-function save() {
-    write("data", JSON.stringify(data), settings.cookieExpireDays);
-    console.log("saved gamestate");
-}
-
 /**
  * Initializes all fields, checks for existing savegame, links onclick events and prints all html elements.
  */
 function init() {
+    // order matters here!
     resetData();
     resetBuffer();
     bufferUpgradePrices();
     initTableBuildings();
     initTableUpgrades();
     updatePrices();
-    setInterval(loop, settings.updateInterval);
     load();
-    window.addEventListener("beforeunload", function () { save() });
+    updateTableBuildingsVisibility();
+    updateTableUpgradesVisibility();
+    setInterval(tick, settings.intervalTick);
     setInterval(save, settings.intervalSave);
     document.getElementById("buttonReset").addEventListener("click", function () { reset() });
     document.getElementById("clickImage").addEventListener("click", function () { clickThing() });
-    updateTableBuildingsVisibility();
-    updateTableUpgradesVisibility();
+    window.addEventListener("beforeunload", function () { save() });
     console.log("executed init");
 }
 
