@@ -1,3 +1,5 @@
+import { write, read, erase } from './cookie.js';
+
 let data;
 
 let buffer;
@@ -71,6 +73,7 @@ const settings = {
     intervalSave: 10_000,
     digitThreshold: 10,
     buildingBuySteps: [1, 10, 20],
+    cookieExpireDays: 365,
 }
 
 let loopId;
@@ -81,7 +84,7 @@ function loop() {
 }
 
 function clickThing() {
-    data.things += settings.gameSpeedFactor;
+    data.things += settings.gameSpeedFactor + buffer.tpsTotal;
     updateThingCount();
     updateButtons();
 }
@@ -91,7 +94,7 @@ function reset() {
         resetData();
         resetBuffer();
         bufferUpgradePrices();
-        deleteCookie();
+        erase();
         updateTps();
         updatePrices();
         updateThingCount();
@@ -126,13 +129,13 @@ function calcUpgradeCost(building, upgrade) {
 
 function resetData() {
     data = {
-        date: null,
-        things: 0,
+        date: Date.now(),
+        things: 0.0,
         buildings: new Array(buildings.length),
         upgrades: new Array(buildings.length),
     }
     for (let i = 0; i < buildings.length; i++) {
-        data.buildings[i] = 0;
+        data.buildings[i] = 0.0;
         data.upgrades[i] = new Array(buildings[i].upgrades.length);
         for (let j = 0; j < buildings[i].upgrades.length; j++) {
             data.upgrades[i][j] = false;
@@ -142,22 +145,22 @@ function resetData() {
 
 function resetBuffer() {
     buffer = {
-        tpsTotal: 0,
+        tpsTotal: 0.0,
         tps: new Array(buildings.length),
         prices: new Array(buildings.length),
         upgrades: new Array(buildings.length),
         pricesUpgrades: new Array(buildings.length),
     }
     for (let i = 0; i < buildings.length; i++) {
-        buffer.tps[i] = 0;
-        buffer.upgrades[i] = 0;
+        buffer.tps[i] = 0.0;
+        buffer.upgrades[i] = 0.0;
         buffer.prices[i] = new Array(settings.buildingBuySteps);
         for (let j = 0; j < settings.buildingBuySteps; j++) {
-            buffer.prices[i][j] = 0;
+            buffer.prices[i][j] = 0.0;
         }
         buffer.pricesUpgrades[i] = new Array(buildings[i].upgrades.length);
         for (let j = 0; j < buildings[i].upgrades.length; j++) {
-            buffer.pricesUpgrades[i][j] = 0;
+            buffer.pricesUpgrades[i][j] = 0.0;
         }
     }
 }
@@ -198,7 +201,7 @@ function upgrade(building, step) {
 }
 
 function updateThingCount() {
-    let now = new Date();
+    const now = Date.now();
     data.things += buffer.tpsTotal * settings.gameSpeedFactor * (now - data.date) / 1_000;
     data.date = now;
     document.getElementById("thingCount").innerHTML = format(data.things, false);
@@ -246,22 +249,12 @@ function updateTps(building) {
     }
 }
 
-function setDate() {
-    data.date = Date().now();
-    data.expires.setDate(Date.now() + 365);
-}
-
-function writeCookie() {
-    data.date = Date.now();
-    document.cookie = 'data=' + JSON.stringify(data) + '; SameSite=Strict; expires=Sun, Mo Jan 2024 12:00:00 UTC; path=/';
-    console.log("wrote cookie");
-}
-
-function readCookie() {
-    if (document.cookie === "") {
-        console.log("no cookie to read");
+function load() {
+    const cookie = read("data");
+    if (cookie === undefined) {
+        console.log("no saved data to read");
     } else {
-        data = JSON.parse(document.cookie.slice(document.cookie.indexOf("=") + 1));
+        data = JSON.parse(cookie);
         bufferUpgrades();
         updateTps();
         updatePrices();
@@ -271,6 +264,7 @@ function readCookie() {
         updateTableBuildingsVisibility();
         updateTableUpgradesVisibility();
         revealBuildings();
+        console.log("loaded gamestate");
     }
 }
 
@@ -286,10 +280,6 @@ function revealBuildings(building) {
             document.getElementById("buildingName" + building).innerHTML = "?????";
         }
     }
-}
-
-function deleteCookie() {
-    document.cookie = 'data=; SameSite=Strict; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
 
 function initTableBuildings() {
@@ -453,6 +443,11 @@ function bufferUpgradePrices() {
     }
 }
 
+function save() {
+    write("data", JSON.stringify(data), settings.cookieExpireDays);
+    console.log("saved gamestate");
+}
+
 /**
  * Initializes all fields, checks for existing savegame, links onclick events and prints all html elements.
  */
@@ -464,13 +459,11 @@ function init() {
     initTableUpgrades();
     updatePrices();
     setInterval(loop, settings.updateInterval);
-    readCookie();
-    window.addEventListener("beforeunload", function () { writeCookie() });
-    setInterval(writeCookie, settings.intervalSave);
+    load();
+    window.addEventListener("beforeunload", function () { save() });
+    setInterval(save, settings.intervalSave);
     document.getElementById("buttonReset").addEventListener("click", function () { reset() });
     document.getElementById("clickImage").addEventListener("click", function () { clickThing() });
-    //document.getElementById("buttonReset").onclick = reset;
-    //document.getElementById("clickImage").onclick = clickThing;
     updateTableBuildingsVisibility();
     updateTableUpgradesVisibility();
     console.log("executed init");
