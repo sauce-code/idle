@@ -254,7 +254,7 @@ const rules = {
     buildingCostFactorSameLvl: 1.17,
     buildingUpgradeRequiredBuildings: 10,
     buildingUpgradeIncomeFactor: 2,
-    buildingUpgradeCostFactor: 4,
+    buildingUpgradeCostFactor: .5,
     buildingUpgradeEntranceRequirement: 2,
 }
 
